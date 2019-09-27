@@ -29,6 +29,7 @@
     src: "{{ item }}"
   loop:
     - "{{ sshd_configs|default([]) }}"
+  when: sshd_config | length > 0
 
 - name: 'Merge configs and restart SSHD'
   assemble:
