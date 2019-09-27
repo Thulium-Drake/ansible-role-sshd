@@ -1,0 +1,17 @@
+---
+# Any extra required SSHD config files to be merged into a single file
+# The resulting file is validated before the SSH server is restarted
+#
+# This module mainly allows for extra configuration, is does NOT override anything
+# in the base configuration.
+#
+# The files are merged in the order they are listed in /etc/ssh/conf.d
+# The base configuration is 00, but can be disabled
+sshd_base_config_enabled: true
+
+# List of files that have to be place on the server
+# This variable is set by merging vars that end with _sshd_configs__to_merge
+# to the list below. E.g.
+#
+#example__sshd_configs__to_merge:
+#  - 02_sshd_allow_root_login

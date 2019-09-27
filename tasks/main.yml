@@ -1,0 +1,42 @@
+---
+# What: Configure the SSH server
+#
+- name: 'Create conf directory'
+  file:
+    dest: '/etc/ssh/conf.d'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: 0755
+
+- name: 'Place/remove base config file'
+  template:
+    dest: '/etc/ssh/conf.d/00_sshd_base'
+    src: '00_sshd_base.j2'
+    owner: 'root'
+    group: 'root'
+    mode: 0644
+
+- name: 'Merge sshd_configs (requires Ansible Merge Vars)'
+  merge_vars:
+    suffix_to_merge: '_sshd_configs__to_merge'
+    merged_var_name: 'sshd_configs'
+    expected_type: 'list'
+
+- name: 'Place additional config file(s)'
+  copy:
+    dest: "/etc/ssh/conf.d/{{ item }}"
+    src: "{{ item }}"
+  loop:
+    - "{{ sshd_configs|default([]) }}"
+
+- name: 'Merge configs and restart SSHD'
+  assemble:
+    dest: '/etc/ssh/sshd_config'
+    src: '/etc/ssh/conf.d'
+    owner: 'root'
+    group: 'root'
+    mode: 0644
+    validate: '/usr/sbin/sshd -t -f %s'
+  notify:
+    - 'restart sshd'
