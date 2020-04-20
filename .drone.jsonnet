@@ -9,7 +9,11 @@
         commands: [
           "molecule lint",
           "molecule syntax"
-        ]
+        ],
+        privileged: true,
+        volumes: [
+          { name: "docker", path: "/var/run/docker.sock" },
+        ],
       }
     ]
   },
