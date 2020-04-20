@@ -4,11 +4,11 @@ dependency:
 driver:
   name: 'docker'
 lint:
-  name: 'yamllint'
-  options:
-    config-file: 'molecule/default/yamllint.yml'
+  set -e
+  yamllint -c molecule/default/yamllint.yml
+  ansible-lint molecule/default/converge.yml
 platforms:
-  - name: "vmware-${MOLECULE_DISTRO:-debian9}"
+  - name: "sshd-${MOLECULE_DISTRO:-debian9}"
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian9}-ansible:latest"
     command: '/lib/systemd/systemd'
     pre_build_image: true
@@ -17,5 +17,5 @@ platforms:
     privileged: true
 provisioner:
   name: 'ansible'
-  lint:
-    name: 'ansible-lint'
+verifier:
+  name: 'ansible'
