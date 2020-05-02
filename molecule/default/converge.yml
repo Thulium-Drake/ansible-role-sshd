@@ -5,3 +5,8 @@
     - name: 'Run role'
       import_role:
         name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
+  vars:
+    test_sshd_configs__to_merge:
+      - '02_allow_root_login'
+    test_root_ssh_keys__to_merge:
+      - '02_network_admin'

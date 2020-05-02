@@ -1,6 +1,11 @@
 ---
 # What: Configure the SSH server
 #
+- name: 'Install SSH server'
+  package:
+    name: 'openssh-server'
+    state: 'present'
+
 - name: 'Create conf directory'
   file:
     dest: '/etc/ssh/conf.d'
@@ -23,12 +28,19 @@
     merged_var_name: 'sshd_configs'
     expected_type: 'list'
 
+- name: 'Merge root_ssh_keys (requires Ansible Merge Vars)'
+  merge_vars:
+    suffix_to_merge: '_root_ssh_keys__to_merge'
+    merged_var_name: 'root_ssh_keys'
+    expected_type: 'list'
+
 - name: 'Place additional config file(s)'
   copy:
-    dest: "/etc/ssh/conf.d/{{ item }}"
-    src: "{{ item }}"
-  loop:
-    - "{{ sshd_configs|default([]) }}"
+    dest: "/etc/ssh/conf.d/{{ file }}"
+    src: "{{ sshd_configdir + file }}"
+  loop: "{{ sshd_configs|default([]) }}"
+  loop_control:
+    loop_var: 'file'
   when: sshd_configs | length > 0
 
 - name: 'Merge configs and restart SSHD'
@@ -41,3 +53,31 @@
     validate: '/usr/sbin/sshd -t -f %s'
   notify:
     - 'restart sshd'
+
+- name: 'Set up SSH authorized keys for root'
+  block:
+    - name: 'Put keys in temp file'
+      lineinfile:
+        path: '/tmp/authorized_keys'
+        line: "{{ lookup('file', sshd_pubkeydir + key ) }}"
+        create: true
+        state: 'present'
+      loop: "{{ root_ssh_keys|default([]) }}"
+      loop_control:
+        loop_var: 'key'
+      changed_when: false
+      delegate_to: 'localhost'
+
+    - name: 'Install authorized_keys'
+      authorized_key:
+        user: 'root'
+        key: "{{ lookup('file', '/tmp/authorized_keys' ) }}"
+        exclusive: true
+  always:
+    - name: 'Clean up temp file'
+      file:
+        path: '/tmp/authorized_keys'
+        state: 'absent'
+      changed_when: false
+      delegate_to: 'localhost'
+  when: root_ssh_keys | length > 0

@@ -9,9 +9,20 @@
 # The base configuration is 00, but can be disabled
 sshd_base_config_enabled: true
 
+# Location relative to the playbookdir/files where the config files are located
+sshd_configdir: 'sshd_configs/'
 # List of files that have to be place on the server
 # This variable is set by merging vars that end with _sshd_configs__to_merge
 # to the list below. E.g.
 #
 #example__sshd_configs__to_merge:
 #  - 02_sshd_allow_root_login
+
+# Location relative to the playbookdir/files where the ssh keys are located
+sshd_pubkeydir: 'pubkeys/'
+# List of files that contain SSH keys
+# This variable is set by merging vars that end with _root_ssh_keys__to_merge
+# to the list below. E.g.
+#
+#example__root_ssh_keys__to_merge:
+#  - network_adminA_key
