@@ -5,6 +5,10 @@
   package:
     name: 'openssh-server'
     state: 'present'
+  notify:
+    - 'restart sshd'
+
+- meta: 'flush_handlers'
 
 - name: 'Create conf directory'
   file:
