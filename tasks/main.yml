@@ -1,6 +1,10 @@
 ---
 # What: Configure the SSH server
 #
+- name: 'Include OS specific variables'
+  include_vars: "{{ ansible_facts['os_family'] }}.yml"
+  no_log: true
+
 - name: 'Install SSH server'
   package:
     name: 'openssh-server'
@@ -62,7 +66,7 @@
   block:
     - name: 'Put keys in temp file'
       lineinfile:
-        path: '/tmp/authorized_keys'
+        path: "/tmp/authorized_keys_{{ ansible_facts['fqdn'] }}"
         line: "{{ lookup('file', sshd_pubkeydir + key ) }}"
         create: true
         state: 'present'
@@ -75,7 +79,7 @@
     - name: 'Install authorized_keys'
       authorized_key:
         user: 'root'
-        key: "{{ lookup('file', '/tmp/authorized_keys' ) }}"
+        key: "{{ lookup('file', '/tmp/authorized_keys_' + ansible_facts['fqdn'] ) }}"
         exclusive: true
   always:
     - name: 'Clean up temp file'

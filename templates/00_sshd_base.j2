@@ -70,7 +70,7 @@ Compression yes
 #Banner none
 PrintMotd no
 AcceptEnv LANG LC_* GIT_AUTHOR_* GIT_COMMITER_*
-Subsystem	sftp	/usr/lib/openssh/sftp-server
+Subsystem	sftp	{{ sshd_sftp_location }}
 
 ##
 ## END OF 00_sshd_base

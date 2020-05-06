@@ -1,0 +1,2 @@
+---
+sshd_sftp_location: '/usr/libexec/openssh/sftp-server'
