@@ -3,6 +3,10 @@
 # Please place any local additions (NOT overrides!) in /etc/ssh/conf.d in a seperate file
 #
 # The only overrides possible are for lines that are still commented out (which are the defaults for openssh)
+#
+# This config is compliant with Mozilla Modern https://infosec.mozilla.org/guidelines/openssh
+#
+# The only exception is that the root user is still allowed to log on, with pubkey authentication
 
 ##
 ## START OF 00_sshd_base
@@ -15,37 +19,33 @@
 #ListenAddress ::
 Protocol 2
 
-#HostKey /etc/ssh/ssh_host_rsa_key
-#HostKey /etc/ssh/ssh_host_ecdsa_key
-#HostKey /etc/ssh/ssh_host_ed25519_key
-#HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
 
 # Ciphers and keying
 RekeyLimit default none
-KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512
+KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-MACs umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
 
 # Logging
-#SyslogFacility AUTH
-#LogLevel INFO
-#PrintLastLog yes
+LogLevel VERBOSE
 
-# Authentication:
+# Authentication
 LoginGraceTime 1m
-#PermitRootLogin prohibit-password
+PermitRootLogin prohibit-password
 StrictModes yes
 MaxAuthTries 6
 MaxSessions 10
 
-PubkeyAuthentication yes
+AuthenticationMethods publickey
 AuthorizedKeysFile	.ssh/authorized_keys
-PasswordAuthentication no
 UsePAM yes
 
 # Forwarding
 #GatewayPorts no
-X11Forwarding yes
+#X11Forwarding yes
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
