@@ -34,7 +34,7 @@ LogLevel INFO
 
 # Authentication
 LoginGraceTime 60
-PermitRootLogin no
+PermitRootLogin {{ sshd_permit_root_login }}
 PermitEmptyPasswords no
 HostbasedAuthentication no
 IgnoreRhosts yes

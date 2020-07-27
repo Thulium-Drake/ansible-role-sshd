@@ -62,7 +62,7 @@
   notify:
     - 'restart sshd'
 
-- name: 'Set up SSH authorized keys for root'
+- name: "Set up SSH authorized keys for {{ sshd_admin_user }}"
   block:
     - name: 'Put keys in temp file'
       lineinfile:
@@ -76,15 +76,15 @@
       changed_when: false
       delegate_to: 'localhost'
 
-    - name: 'Install authorized_keys'
+    - name: "Install authorized_keys for {{ sshd_admin_user }}"
       authorized_key:
-        user: 'root'
+        user: "{{ sshd_admin_user }}"
         key: "{{ lookup('file', '/tmp/authorized_keys_' + ansible_facts['fqdn'] ) }}"
         exclusive: true
   always:
     - name: 'Clean up temp file'
       file:
-        path: '/tmp/authorized_keys'
+        path: "/tmp/authorized_keys_{{ ansible_facts['fqdn'] }}"
         state: 'absent'
       changed_when: false
       delegate_to: 'localhost'

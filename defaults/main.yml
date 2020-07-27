@@ -16,7 +16,14 @@ sshd_configdir: 'sshd_configs/'
 # to the list below. E.g.
 #
 #example__sshd_configs__to_merge:
-#  - 02_sshd_allow_root_login
+#  - 02_sshd_allow_root_login_from_adminhost
+
+# Confgure SSH keys for this user (e.g. root/ansible)
+sshd_admin_user: 'root'
+
+# PermitRootLogin setting
+# Default without-password, but CIS requires no
+sshd_permit_root_login: 'without-password'
 
 # Location relative to the playbookdir/files where the ssh keys are located
 sshd_pubkeydir: 'pubkeys/'
