@@ -20,7 +20,7 @@
     state: 'directory'
     owner: 'root'
     group: 'root'
-    mode: 0755
+    mode: 0700
 
 - name: 'Place/remove base config file'
   template:
@@ -57,7 +57,7 @@
     src: '/etc/ssh/conf.d'
     owner: 'root'
     group: 'root'
-    mode: 0644
+    mode: 0600
     validate: '/usr/sbin/sshd -t -f %s'
   notify:
     - 'restart sshd'
