@@ -23,7 +23,7 @@ sshd_admin_user: 'root'
 
 # PermitRootLogin setting
 # Default without-password, but CIS requires no
-sshd_permit_root_login: 'without-password'
+sshd_permit_root_login: 'prohibit-password'
 
 # Location relative to the playbookdir/files where the ssh keys are located
 sshd_pubkeydir: 'pubkeys/'
