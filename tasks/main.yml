@@ -70,6 +70,7 @@
         line: "{{ lookup('file', sshd_pubkeydir + key ) }}"
         create: true
         state: 'present'
+        mode: 0600
       loop: "{{ root_ssh_keys|default([]) }}"
       loop_control:
         loop_var: 'key'
