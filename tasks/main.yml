@@ -36,10 +36,10 @@
     merged_var_name: 'sshd_configs'
     expected_type: 'list'
 
-- name: 'Merge root_ssh_keys (requires Ansible Merge Vars)'
+- name: 'Merge admin_ssh_keys (requires Ansible Merge Vars)'
   merge_vars:
-    suffix_to_merge: '_root_ssh_keys__to_merge'
-    merged_var_name: 'root_ssh_keys'
+    suffix_to_merge: '_admin_ssh_keys__to_merge'
+    merged_var_name: 'admin_ssh_keys'
     expected_type: 'list'
 
 - name: 'Place additional config file(s)'
@@ -71,7 +71,7 @@
         create: true
         state: 'present'
         mode: 0600
-      loop: "{{ root_ssh_keys|default([]) }}"
+      loop: "{{ admin_ssh_keys|default([]) }}"
       loop_control:
         loop_var: 'key'
       changed_when: false
@@ -89,4 +89,4 @@
         state: 'absent'
       changed_when: false
       delegate_to: 'localhost'
-  when: root_ssh_keys | length > 0
+  when: admin_ssh_keys | length > 0

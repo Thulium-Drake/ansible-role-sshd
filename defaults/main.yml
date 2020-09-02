@@ -28,8 +28,8 @@ sshd_permit_root_login: 'prohibit-password'
 # Location relative to the playbookdir/files where the ssh keys are located
 sshd_pubkeydir: 'pubkeys/'
 # List of files that contain SSH keys
-# This variable is set by merging vars that end with _root_ssh_keys__to_merge
+# This variable is set by merging vars that ends with _admin_ssh_keys__to_merge
 # to the list below. E.g.
 #
-#example__root_ssh_keys__to_merge:
+#example__admin_ssh_keys__to_merge:
 #  - network_adminA_key
