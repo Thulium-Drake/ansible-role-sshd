@@ -42,7 +42,16 @@ StrictModes yes
 MaxAuthTries 4
 MaxSessions 10
 
-AuthenticationMethods publickey
+{% if sshd_kerberos_authentication -%}
+# Enable Kerberos Authentication
+KerberosAuthentication yes
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+ChallengeResponseAuthentication {{ sshd_kerberos_password_prompts }}
+{% endif %}
+
+AuthenticationMethods publickey{% if sshd_kerberos_authentication %} gssapi-with-mic{% endif %}
+PasswordAuthentication {{ sshd_password_authentication }}
 AuthorizedKeysFile	.ssh/authorized_keys
 UsePAM yes
 

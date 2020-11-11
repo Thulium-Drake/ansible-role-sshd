@@ -25,6 +25,14 @@ sshd_admin_user: 'root'
 # Default without-password, but CIS requires no
 sshd_permit_root_login: 'prohibit-password'
 
+# Allow password authentication
+sshd_password_authentication: 'no'
+
+# Enable Kerberos authentication
+sshd_kerberos_authentication: false
+# Allow users to authenticate without Kerberos tickets (providing their password)
+sshd_kerberos_password_prompts: 'no'
+
 # Location relative to the playbookdir/files where the ssh keys are located
 sshd_pubkeydir: 'pubkeys/'
 # List of files that contain SSH keys
