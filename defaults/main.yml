@@ -21,6 +21,9 @@ sshd_configdir: 'sshd_configs/'
 # Confgure SSH keys for this user (e.g. root/ansible)
 sshd_admin_user: 'root'
 
+# Print Message of the Day after login
+sshd_print_motd: 'yes'
+
 # PermitRootLogin setting
 # Default without-password, but CIS requires no
 sshd_permit_root_login: 'prohibit-password'
