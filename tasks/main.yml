@@ -78,7 +78,7 @@
       delegate_to: 'localhost'
 
     - name: "Install authorized_keys for {{ sshd_admin_user }}"
-      authorized_key:
+      ansible.posix.authorized_key:
         user: "{{ sshd_admin_user }}"
         key: "{{ lookup('file', '/tmp/authorized_keys_' + ansible_facts['fqdn'] ) }}"
         exclusive: true
