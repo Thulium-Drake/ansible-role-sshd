@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: Jeffrey van Pelt
+  author: thulium_drake
   description: Configures SSHD settings and allows for the deployment of additional config files per host/group
   company:
   role_name: sshd
@@ -14,6 +14,7 @@ galaxy_info:
       versions:
         - stretch
         - buster
+        - bullseye
     - name: Ubuntu
       versions:
         - bionic
