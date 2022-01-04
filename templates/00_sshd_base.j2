@@ -40,7 +40,7 @@ HostbasedAuthentication no
 IgnoreRhosts yes
 StrictModes yes
 MaxAuthTries 4
-MaxSessions 10
+MaxSessions {{ sshd_max_sessions }}
 
 {% if sshd_kerberos_authentication -%}
 # Enable Kerberos Authentication

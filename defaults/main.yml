@@ -36,6 +36,9 @@ sshd_kerberos_authentication: false
 # Allow users to authenticate without Kerberos tickets (providing their password)
 sshd_kerberos_password_prompts: 'no'
 
+# Specifies the maximum number of open sessions permitted per network connection
+sshd_max_sessions: 10  # CIS requires 4 or less
+
 # Location relative to the playbookdir/files where the ssh keys are located
 sshd_pubkeydir: 'pubkeys/'
 # List of files that contain SSH keys
