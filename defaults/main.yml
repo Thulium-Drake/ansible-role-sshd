@@ -36,6 +36,11 @@ sshd_kerberos_authentication: false
 # Allow users to authenticate without Kerberos tickets (providing their password)
 sshd_kerberos_password_prompts: 'no'
 
+# Enable fetching public keys via SSSD
+sshd_sssd_authorized_keys: false
+sshd_sssd_authorizedkeys_command: '/usr/bin/sss_ssh_authorizedkeys'
+sshd_sssd_authorizedkeys_command_user: 'nobody'
+
 # Specifies the maximum number of open sessions permitted per network connection
 sshd_max_sessions: 10  # CIS requires 4 or less
 

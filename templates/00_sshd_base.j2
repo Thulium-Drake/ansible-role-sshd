@@ -86,6 +86,12 @@ PrintMotd {{ sshd_print_motd }}
 AcceptEnv LANG LC_* GIT_AUTHOR_* GIT_COMMITER_*
 Subsystem	sftp	{{ sshd_sftp_location }}
 
+{% if sshd_sssd_authorized_keys %}
+# Fetch authorized_keys via SSSD
+AuthorizedKeysCommandUser {{ sshd_sssd_authorizedkeys_command_user }}
+AuthorizedKeysCommand {{ sshd_sssd_authorizedkeys_command }}
+{% endif %}
+
 ##
 ## END OF 00_sshd_base
 ##
