@@ -59,7 +59,7 @@ UsePAM yes
 # Forwarding
 #GatewayPorts no
 X11Forwarding {{ sshd_x11_forwarding }}
-TcpForwarding {{ sshd_tcp_forwarding }}
+AllowTcpForwarding {{ sshd_tcp_forwarding }}
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
