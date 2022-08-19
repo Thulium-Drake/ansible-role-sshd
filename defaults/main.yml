@@ -28,6 +28,10 @@ sshd_print_motd: 'yes'
 # Default without-password, but CIS requires no
 sshd_permit_root_login: 'prohibit-password'
 
+# Allow TCP / X11 forwarding
+sshd_x11_forwarding: 'no'
+sshd_tcp_forwarding: 'no'
+
 # Allow password authentication
 sshd_password_authentication: 'no'
 
