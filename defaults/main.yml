@@ -15,7 +15,7 @@ sshd_configdir: 'sshd_configs/'
 # This variable is set by merging vars that end with _sshd_configs__to_merge
 # to the list below. E.g.
 #
-#example__sshd_configs__to_merge:
+# example__sshd_configs__to_merge:
 #  - 02_sshd_allow_root_login_from_adminhost
 
 # Confgure SSH keys for this user (e.g. root/ansible)
@@ -54,5 +54,5 @@ sshd_pubkeydir: 'pubkeys/'
 # This variable is set by merging vars that ends with _admin_ssh_keys__to_merge
 # to the list below. E.g.
 #
-#example__admin_ssh_keys__to_merge:
+# example__admin_ssh_keys__to_merge:
 #  - network_adminA_key

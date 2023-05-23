@@ -2,33 +2,34 @@
 # What: Configure the SSH server
 #
 - name: 'Include OS specific variables'
-  include_vars: "{{ ansible_facts['os_family'] }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
   no_log: true
 
 - name: 'Install SSH server'
-  package:
+  ansible.builtin.package:
     name: 'openssh-server'
     state: 'present'
   notify:
-    - 'restart sshd'
+    - 'Restart sshd'
 
-- meta: 'flush_handlers'
+- name: 'Flush handlers'
+  ansible.builtin.meta: 'flush_handlers'
 
 - name: 'Create conf directory'
-  file:
+  ansible.builtin.file:
     dest: '/etc/ssh/conf.d'
     state: 'directory'
     owner: 'root'
     group: 'root'
-    mode: 0700
+    mode: '0700'
 
 - name: 'Place/remove base config file'
-  template:
+  ansible.builtin.template:
     dest: '/etc/ssh/conf.d/00_sshd_base'
     src: '00_sshd_base.j2'
     owner: 'root'
     group: 'root'
-    mode: 0644
+    mode: '0644'
 
 - name: 'Merge sshd_configs (requires Ansible Merge Vars)'
   merge_vars:
@@ -43,35 +44,39 @@
     expected_type: 'list'
 
 - name: 'Place additional config file(s)'
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/ssh/conf.d/{{ file }}"
     src: "{{ sshd_configdir + file }}"
-  loop: "{{ sshd_configs|default([]) }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0640'
+  loop: "{{ sshd_configs | default([]) }}"
   loop_control:
     loop_var: 'file'
   when: sshd_configs | length > 0
 
 - name: 'Merge configs and restart SSHD'
-  assemble:
+  ansible.builtin.assemble:
     dest: '/etc/ssh/sshd_config'
     src: '/etc/ssh/conf.d'
     owner: 'root'
     group: 'root'
-    mode: 0600
+    mode: '0600'
     validate: '/usr/sbin/sshd -t -f %s'
   notify:
-    - 'restart sshd'
+    - 'Restart sshd'
 
 - name: "Set up SSH authorized keys for {{ sshd_admin_user }}"
+  when: admin_ssh_keys | length > 0
   block:
     - name: 'Put keys in temp file'
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "/tmp/authorized_keys_{{ ansible_facts['fqdn'] }}"
-        line: "{{ lookup('file', sshd_pubkeydir + key ) }}"
+        line: "{{ lookup('file', sshd_pubkeydir + key) }}"
         create: true
         state: 'present'
-        mode: 0644
-      loop: "{{ admin_ssh_keys|default([]) }}"
+        mode: '0644'
+      loop: "{{ admin_ssh_keys | default([]) }}"
       loop_control:
         loop_var: 'key'
       changed_when: false
@@ -81,14 +86,13 @@
     - name: "Install authorized_keys for {{ sshd_admin_user }}"
       ansible.posix.authorized_key:
         user: "{{ sshd_admin_user }}"
-        key: "{{ lookup('file', '/tmp/authorized_keys_' + ansible_facts['fqdn'] ) }}"
+        key: "{{ lookup('file', '/tmp/authorized_keys_' + ansible_facts['fqdn']) }}"
         exclusive: true
   always:
     - name: 'Clean up temp file'
-      file:
+      ansible.builtin.file:
         path: "/tmp/authorized_keys_{{ ansible_facts['fqdn'] }}"
         state: 'absent'
       changed_when: false
       become: false
       delegate_to: 'localhost'
-  when: admin_ssh_keys | length > 0
