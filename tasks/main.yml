@@ -66,33 +66,5 @@
   notify:
     - 'Restart sshd'
 
-- name: "Set up SSH authorized keys for {{ sshd_admin_user }}"
-  when: admin_ssh_keys | length > 0
-  block:
-    - name: 'Put keys in temp file'
-      ansible.builtin.lineinfile:
-        path: "/tmp/authorized_keys_{{ ansible_facts['fqdn'] }}"
-        line: "{{ lookup('file', sshd_pubkeydir + key) }}"
-        create: true
-        state: 'present'
-        mode: '0644'
-      loop: "{{ admin_ssh_keys | default([]) }}"
-      loop_control:
-        loop_var: 'key'
-      changed_when: false
-      become: false
-      delegate_to: 'localhost'
-
-    - name: "Install authorized_keys for {{ sshd_admin_user }}"
-      ansible.posix.authorized_key:
-        user: "{{ sshd_admin_user }}"
-        key: "{{ lookup('file', '/tmp/authorized_keys_' + ansible_facts['fqdn']) }}"
-        exclusive: true
-  always:
-    - name: 'Clean up temp file'
-      ansible.builtin.file:
-        path: "/tmp/authorized_keys_{{ ansible_facts['fqdn'] }}"
-        state: 'absent'
-      changed_when: false
-      become: false
-      delegate_to: 'localhost'
+- name: 'Setup SSH keys'
+  ansible.builtin.include_tasks: 'deploy_ssh_keys.yml'
