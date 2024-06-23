@@ -15,10 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
-        with:
-          ssh-key: ${{ secrets.SSH_KEY }}
-          ssh-known-hosts: ${{ secrets.SSH_HOST_KEY }}
+        uses: actions/checkout@v4
       - name: Ensure Python
         uses: https://github.com/actions/setup-python@v4
         with:
@@ -48,4 +45,17 @@ jobs:
               molecule destroy
               echo "Distro $i succes"
             done
+          fi
+      - name: Clean up our mess
+        if: always()
+        run: |
+          cd ${{ gitea.workspace }}
+          if test -e molecule/default/test.convergence
+          then
+            for i in $(cat molecule/default/test.convergence)
+            do
+              MOLECULE_DISTRO=$i molecule destroy
+            done
+          else
+            molecule destroy
           fi
