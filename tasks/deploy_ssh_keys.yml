@@ -1,10 +1,4 @@
 ---
-- name: 'Merge admin_ssh_keys (requires Ansible Merge Vars)'
-  merge_vars:
-    suffix_to_merge: '_admin_ssh_keys__to_merge'
-    merged_var_name: 'admin_ssh_keys'
-    expected_type: 'list'
-
 - name: "Set up SSH authorized keys for {{ sshd_admin_user }}"
   when: admin_ssh_keys | length > 0
   block:
