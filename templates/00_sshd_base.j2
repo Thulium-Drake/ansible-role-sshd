@@ -50,7 +50,7 @@ GSSAPICleanupCredentials yes
 ChallengeResponseAuthentication {{ sshd_kerberos_password_prompts }}
 {% endif %}
 
-AuthenticationMethods publickey{% if sshd_kerberos_authentication %} gssapi-with-mic{% endif %}{% if sshd_password_authentication %} password{% endif %}
+AuthenticationMethods publickey{% if sshd_kerberos_authentication %} gssapi-with-mic{% endif %}{% if sshd_password_authentication | bool %} password{% endif %}
 
 PasswordAuthentication {{ sshd_password_authentication }}
 AuthorizedKeysFile	.ssh/authorized_keys
