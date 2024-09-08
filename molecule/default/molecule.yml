@@ -5,7 +5,7 @@ driver:
   name: ${DRIVER_NAME:-podman}
 platforms:
   - name: "sshd-${MOLECULE_DISTRO:-debian12}"
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian12}-ansible:latest"
+    image: "git.element-networks.nl/containers/${MOLECULE_DISTRO:-debian12}-ansible:latest"
     command: '/lib/systemd/systemd'
     pre_build_image: true
     volumes:

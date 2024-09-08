@@ -4,7 +4,8 @@
 #
 # The only overrides possible are for lines that are still commented out (which are the defaults for openssh)
 #
-# This config is compliant with Mozilla Modern https://infosec.mozilla.org/guidelines/openssh
+# This config is compliant with Mozilla Modern https://infosec.mozilla.org/guidelines/openssh and tuned to
+# only support the most recent and secure algorithms. This configuration will work on Debian 10+ and RHEL8+
 #
 # The only exception is that the root user is still allowed to log on, with pubkey authentication
 
@@ -20,14 +21,12 @@ Port {{ sshd_listen_port }}
 Protocol 2
 
 HostKey /etc/ssh/ssh_host_ed25519_key
-HostKey /etc/ssh/ssh_host_rsa_key
-HostKey /etc/ssh/ssh_host_ecdsa_key
 
 # Ciphers and keying
 RekeyLimit default none
-KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
-Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+KexAlgorithms curve25519-sha256@libssh.org
+Ciphers chacha20-poly1305@openssh.com
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
 
 # Logging
 LogLevel INFO
