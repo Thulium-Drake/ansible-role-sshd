@@ -69,7 +69,9 @@ AllowTcpForwarding {{ sshd_tcp_forwarding }}
 PermitUserEnvironment no
 #PermitTunnel no
 #ChrootDirectory none
-DenyUsers nobody # CIS 5.2.4
+
+# CIS 5.2.4
+DenyUsers nobody
 
 # Performance
 ClientAliveInterval 300
