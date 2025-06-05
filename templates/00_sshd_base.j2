@@ -29,6 +29,10 @@ RekeyLimit default none
 KexAlgorithms {{ sshd_kexalgos }}
 Ciphers {{ sshd_ciphers }}
 MACs {{ sshd_macs }}
+HostKeyAlgorithms {{ sshd_hostkeyalgorithms }}
+PubkeyAcceptedAlgorithms {{ sshd_pubkeyacceptedalgorithms }}
+CASignatureAlgorithms {{ sshd_casignaturealgorithms }}
+RequiredRSASize {{ sshd_requiredrsasize }}
 
 # Logging
 LogLevel INFO
@@ -77,8 +81,8 @@ DenyUsers nobody
 ClientAliveInterval 300
 ClientAliveCountMax 3
 TCPKeepAlive yes
-Compression yes
-#UseDNS no
+Compression no
+UseDNS no
 MaxStartups 10:30:60
 
 # Housekeeping

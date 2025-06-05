@@ -34,9 +34,17 @@ sshd_hostkeys_enabled:
 # - 'rsa'
 
 # Ciphers and keying algorithm settings
+# NOTE: These settings are very strict and require modern keys and clients
+# they exceed CIS requirements, but are not compliant to the letter
 sshd_kexalgos: 'curve25519-sha256@libssh.org'
 sshd_ciphers: 'chacha20-poly1305@openssh.com'
 sshd_macs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com'
+sshd_hostkeyalgorithms: 'ssh-ed25519'
+sshd_pubkeyacceptedalgorithms: 'ssh-ed25519'
+sshd_casignaturealgorithms: 'ssh-ed25519'
+
+# Only has effect when RSA style keys are accepted
+sshd_requiredrsasize: 3072
 
 # Print Message of the Day after login
 sshd_print_motd: 'yes'
