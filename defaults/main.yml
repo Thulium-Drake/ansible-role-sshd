@@ -46,6 +46,12 @@ sshd_casignaturealgorithms: 'ssh-ed25519'
 # Only has effect when RSA style keys are accepted
 sshd_requiredrsasize: 3072
 
+# Access control
+sshd_allowgroups: []
+sshd_denygroups: []
+sshd_allowusers: []
+sshd_denyusers: []
+
 # Print Message of the Day after login
 sshd_print_motd: 'yes'
 
