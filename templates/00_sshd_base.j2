@@ -34,9 +34,11 @@ CASignatureAlgorithms {{ sshd_casignaturealgorithms }}
 
 {% if ansible_facts['packages']['openssh-server'][0]['version'] is version( '8.5', 'ge') %}
 PubkeyAcceptedAlgorithms {{ sshd_pubkeyacceptedalgorithms }}
-RequiredRSASize {{ sshd_requiredrsasize }}
 {% else %}
 PubkeyAcceptedKeyTypes {{ sshd_pubkeyacceptedalgorithms }}
+{% endif %}
+{% if ansible_facts['distribution_version'] is version('9.1', 'ge') and ansible_facts['distribution'] == 'RedHat' %}
+RequiredRSASize {{ sshd_requiredrsasize }}
 {% endif %}
 
 # Logging
