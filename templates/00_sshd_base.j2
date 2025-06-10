@@ -30,9 +30,14 @@ KexAlgorithms {{ sshd_kexalgos }}
 Ciphers {{ sshd_ciphers }}
 MACs {{ sshd_macs }}
 HostKeyAlgorithms {{ sshd_hostkeyalgorithms }}
-PubkeyAcceptedAlgorithms {{ sshd_pubkeyacceptedalgorithms }}
 CASignatureAlgorithms {{ sshd_casignaturealgorithms }}
+
+{% if ansible_facts['packages']['openssh-server'][0]['version'] is version( '8.5', 'ge') %}
+PubkeyAcceptedAlgorithms {{ sshd_pubkeyacceptedalgorithms }}
 RequiredRSASize {{ sshd_requiredrsasize }}
+{% else %}
+PubkeyAcceptedKeyTypes {{ sshd_pubkeyacceptedalgorithms }}
+{% endif %}
 
 # Logging
 LogLevel INFO

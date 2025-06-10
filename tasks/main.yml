@@ -12,6 +12,10 @@
   notify:
     - 'Restart sshd'
 
+- name: 'Collect openssh package version'
+  ansible.builtin.package_facts:
+  when: ansible_facts['packages'] is not defined
+
 - name: 'Flush handlers'
   ansible.builtin.meta: 'flush_handlers'
 
