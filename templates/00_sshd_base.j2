@@ -96,7 +96,7 @@ DenyUsers {{ sshd_denyusers | join(' ') }}
 {% endif %}
 
 # Performance
-ClientAliveInterval 300
+ClientAliveInterval 15
 ClientAliveCountMax 3
 TCPKeepAlive yes
 Compression no
